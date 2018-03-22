@@ -12,15 +12,22 @@ class Dokumen extends CI_Controller {
 
 	public function index()
 	{
-		
-		$komponen = $this->DokumenModel->getKomponen();
-		$bagkomponen = $this->DokumenModel->getBagkomponen();
+		$id = $this->input->post('id_komponen');
+		var_dump($id);
+		$data['id_komp'] = $id;		
+		$data['komponen'] = $this->DokumenModel->getKomponen();
+		$data['bagkomponen'] = $this->DokumenModel->getBagkomponen($id);
 		$kegiatan = $this->DokumenModel->getKegiatan();
 		$seksi = $this->DokumenModel->getSeksi();
 		$this->load->helper('url');
-		$this->load->view('dokumen_view');
+		$this->load->view('dokumen_view', $data);
 	}
 
+	public function ajax_reload(){
+		$id = $this->input->post('id_komponen');
+		$data = $this->DokumenModel->getBagkomponen($id);
+		echo json_encode($data);		
+	}
 
 
 	public function ajax_list()

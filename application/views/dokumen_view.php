@@ -117,6 +117,28 @@ $(document).ready(function() {
         $(this).parent().parent().removeClass('has-error');
         $(this).next().empty();
     });
+	
+	$('#idkomp').change(function() {
+		var id_komponen= $('#idkomp').val();
+		$.ajax({
+			type: 'POST',
+			data: "id_komponen="+id_komponen,
+			url: "<?php echo site_url('dokumen/ajax_reload/')?>/",
+			success: function(data)
+			{		
+				var obj = JSON.parse(data); 
+				$('select#idbagkomp').children().remove();
+				//console.log(obj);
+				for(i=0; i<obj.length;i++){
+					$('#idbagkomp').append($("<option></option>").attr("value",obj[i].idbagkomp).text(obj[i].bagiankomponen));					
+				}
+			},
+			error: function (jqXHR, textStatus, errorThrown)
+			{
+				alert('Error get data from ajax');
+			}
+		});
+	});	
 
 });
 
@@ -257,21 +279,34 @@ function delete_dokumen(idoutput)
                 <form action="#" id="form" class="form-horizontal">
                    <!--<input type="hidden" value="" name="idkomp"/> -->
                     <div class="form-body">
-                        <div class="form-group">
-                            <label class="control-label col-md-3">Komponen</label>
-                            <div class="col-md-9">
-                                <input name="idkomp" placeholder="Nama Komponen" class="form-control" type="text">
-                                 <span class="help-block"></span>
-                                
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label col-md-3">Bagian Komponen</label>
-                            <div class="col-md-9">
-                                <input name="idbagkomp" placeholder="Nama Bagian Komponen" class="form-control" type="text">
-                                <span class="help-block"></span>
-                            </div>
-                        </div>
+					
+					
+						 <div class="form-group" id="id_komponen">
+							<label class="control-label col-md-3">Kompnen</label>
+							<div class="col-md-9">
+								<select class="form-control" id="idkomp" name="idkomp">
+									echo "<option value='' disabled selected>Pilih komponen</option>";
+									<?php foreach($komponen as $kom){
+										echo"<option value='".$kom->idkomp;
+										if($kom->idkomp == $id_komp){
+											echo "selected";
+										}
+										echo "'>".$kom->uraiankomp."</option>";
+									}
+									?>
+								</select>
+							</div> 					
+						</div> 			
+
+						
+						<div class="form-group" id="id_bagkomponen">
+							<label class="control-label col-md-3">Bagian Komponen</label>
+							<div class="col-md-9">
+								<select class="form-control" name="idbagkomp" id="idbagkomp">
+
+								</select>
+							</div> 					
+						</div> 
                         <div class="form-group">
                             <label class="control-label col-md-3">Nama Kegiatan</label>
                             <div class="col-md-9">
@@ -318,5 +353,6 @@ function delete_dokumen(idoutput)
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 <!-- End Bootstrap modal -->
+
 </body>
 </html>

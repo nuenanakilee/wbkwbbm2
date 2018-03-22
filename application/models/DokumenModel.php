@@ -108,13 +108,10 @@ class DokumenModel extends CI_Model {
 		return $q->result();
 	}
 
-  // Get bagian komponen
-  //function getBagkomponen($id){
-  //$q = $this->db->query("select * from t_bagkomponen left join t_komponen on t_bagkomponen.idkomp=t_komponen.idkomp where t_bagkomponen.idkomp='$id'");
-	function getBagkomponen(){
-		$q = $this->db->query("select * from t_bagkomponen");
+	// Get bagian komponen
+	function getBagkomponen($id){
+		$q = $this->db->query("select * from t_bagkomponen left join t_komponen on t_bagkomponen.idkomp=t_komponen.idkomp where t_bagkomponen.idkomp='$id'");
 		return $q->result(); 
-  // return $this->db->where("idkomp",$id,false)->get("t_bagkomponen");
 	}
 
   // Fungsi untuk menampilkan data dokumen berdasarkan Seksi nya
